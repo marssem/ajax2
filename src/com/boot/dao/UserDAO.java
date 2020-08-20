@@ -9,6 +9,7 @@ public interface UserDAO {
 	int deleteUser(UserInfoVO user);
 	int updateUser(UserInfoVO user);
 	UserInfoVO selectUser(UserInfoVO user);
+	UserInfoVO selectUserById(String uiId);
 	UserInfoVO selectUserForLogin(UserInfoVO user);
 	List<UserInfoVO> selectUserList(UserInfoVO user);
 }

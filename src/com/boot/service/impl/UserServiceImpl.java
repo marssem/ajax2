@@ -14,8 +14,11 @@ public class UserServiceImpl implements UserService {
 	private UserDAO udao = new UserDAOImpl();
 	@Override
 	public int insertUser(UserInfoVO user) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(udao.selectUserById(user.getUiId())!=null) {
+			System.out.println(-1);
+			return -1;
+		}
+		return udao.insertUser(user);
 	}
 
 	@Override
@@ -68,5 +71,14 @@ public class UserServiceImpl implements UserService {
 		ui.setUiPwd("2");
 		boolean isLogin = ud.doLogin(ui, hs);
 		System.out.println(isLogin);
+	}
+
+	@Override
+	public boolean checkUserId(String uiId) {
+		UserInfoVO user = udao.selectUserById(uiId);
+		if(user==null) {
+			return true;
+		}
+	return false;
 	}
 }

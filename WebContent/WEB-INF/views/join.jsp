@@ -25,11 +25,17 @@
 							data-symbol="&#xf206;"></span>
 					</div>
 					
+					<div class="wrap-input100 validate-input m-b-23"
+                  data-validate="ID is reauired">
+                     <button type="button" class="login100"
+                     style="border:1px solid;float:right"
+                        onclick="checkID()">중복체크</button>
+					</div>
 					<div class="wrap-input100 validate-input"
 						data-validate="Password is required">
 						<span class="label-input100">PassWord</span> <input
-							class="input100" type="password" name="ui_password"
-							id="ui_password" placeholder="Type your password"> <span
+							class="input100" type="password" name="ui_pwd"
+							id="ui_pwd" placeholder="Type your password"> <span
 							class="focus-input100" data-symbol="&#xf190;"></span>
 					</div>
 					
@@ -87,7 +93,7 @@
 						<div class="wrap-login100-form-btn">
 							<div class="login100-form-bgbtn"></div>
 							<button type="button" class="login100-form-btn"
-								onclick="doLogin()">JOIN</button>
+								onclick="doSignUp()">JOIN</button>
 						</div>
 					</div>
 
@@ -107,5 +113,58 @@
 	</div>
 
 	<div id="dropDownSelect1"></div>
+	<script >
+	  function doSignUp() {
+	 	  var els = document.querySelectorAll('input');
+	 	  var params = {};
+	 	  for(var i=0;i<els.length;i++){
+	 		  var el = els[i];
+	 		  console.log(el);
+	 		  var keys = el.name.split('_');
+	 		  for(var j=1;j<keys.length;j++){
+	 			  keys[j] = keys[j].substring(0,1).toUpperCase() + keys[j].substring(1); 
+	 		  }
+	 		  params[keys.join('')] = el.value;
+	 	  }
+	 	 params.cmd = 'signup';
+	 	  $.ajax({
+	 		  url : '/ajax/user',
+	 		  method : 'POST',
+	 		  data : JSON.stringify(params),
+	 		  contentType : 'application/json',
+	 		  success : function(res){
+	 			  if(res.result===1){
+	 				  alert('회원가입이 완료되었습니다.');
+	 				  location.href='/views/login';
+	 			  }else if(res.result===-1){
+	 				  alert('이미 존재하는 아이디입니다.');
+	 			  }else{
+	 				  alert('문제 있음');
+	 			  }
+	 		  }
+	 	  })
+	   }
+	   function setUiAge(f){
+		   var birthDate = new Date(f.value);
+		   var toDate = new Date();  
+		   document.querySelector('#ui_age').value = (toDate.getFullYear()-birthDate.getFullYear()+1);
+	   }
+	   function checkID(){
+		   var id = document.querySelector('#ui_id').value;
+		   var url = '/ajax/user';
+		   $.ajax({
+			   url : url,
+			   method : 'GET',
+			   data : {uiId:id,cmd:'checkID'},
+			   success : function(res){
+				   if(res.result){
+					   alert('가입 가능합니다.');
+				   }else{
+					   alert('가입이 불가능한 아이디입니다.');
+				   }
+			   }
+		   });
+	   }
+	</script>
 </body>
 </html>

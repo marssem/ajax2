@@ -22,9 +22,17 @@ import com.google.gson.Gson;
 public class UserServlet extends HttpServlet {
 	private UserService userService =  new UserServiceImpl();
 	private Gson gson = new Gson();
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String contentType = response.getContentType();
-		response.getWriter().append("Served at: ").append(request.getContextPath()).append(contentType);
+		String cmd = request.getParameter("cmd");
+		Map<String,Object> result = new HashMap<>();
+		if("checkID".equals(cmd)) {
+			System.out.println(cmd);
+			String uiId = request.getParameter("uiId");
+			result.put("result", userService.checkUserId(uiId));
+		}
+		PrintWriter pw = response.getWriter();
+		pw.println(gson.toJson(result));
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -36,7 +44,19 @@ public class UserServlet extends HttpServlet {
 		}
 		UserInfoVO user = gson.fromJson(sb.toString(), UserInfoVO.class);
 		Map<String,Object> result = new HashMap<>();
-		result.put("result", userService.doLogin(user, request.getSession()));
+		System.out.println(user);
+		System.out.println("서블렛 리절트");
+		if("login".equals(user.getCmd())) {
+			result.put("result", userService.doLogin(user, request.getSession()));
+		}else if("signup".equals(user.getCmd())) {
+			result.put("result", userService.insertUser(user));
+			System.out.println("서블렛 로긴");
+			System.out.println(result);
+		}else if("logout".equals(user.getCmd())) {
+			request.getSession().invalidate();
+			result.put("result", true);
+		}
+		
 		String json = gson.toJson(result);
 		PrintWriter pw = response.getWriter();
 		pw.println(json);
