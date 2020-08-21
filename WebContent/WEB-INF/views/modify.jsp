@@ -15,20 +15,21 @@
          style="background-image: url('/res/images/bg-01.jpg')">
          <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
             <form class="login100-form validate-form">
-               <span class="login100-form-title p-b-24"> 회원가입 </span>
+            <input type="hidden" name="ui_num" id="ui_num" value="${user.uiNum }">
+               <span class="login100-form-title p-b-24"> 회원정보수정 </span>
 
                <div class="wrap-input100 validate-input m-b-23"
                   data-validate="ID is reauired">
                   <span class="label-input100">User ID</span> 
-                  <input class="input100" type="text" value="${user.uiId}" name="ui_id" id="ui_id" style="width:70%;"placeholder="아이디를 입력하세요">
+                  <input class="input100" type="text" value="${user.uiId}" name="ui_id" id="ui_id" style="width:70%;"placeholder="아이디를 입력하세요" readonly>
                   <span class="focus-input100" data-symbol="&#xf206;"></span> 
                </div>
                <div class="wrap-input100 validate-input"
                   data-validate="Password is required">
                   <span class="label-input100">Password</span> <input
-                     class="input100" type="password" name="ui_password"
-                     id="ui_password" placeholder="비밀번호를 입력하세요"
-                     value="${user.uiPassword}"> <span
+                     class="input100" type="password" name="ui_pwd"
+                     id="ui_pwd" placeholder="비밀번호를 입력하세요"
+                     value="${user.uiPwd}"> <span
                      class="focus-input100" data-symbol="&#xf190;"></span>
                </div>
                <div class="wrap-input100 validate-input m-b-23"
@@ -77,7 +78,7 @@
                   <div class="wrap-login100-form-btn">
                      <div class="login100-form-bgbtn"></div>
                      <button type="button" class="login100-form-btn"
-                        onclick="doSignUp()">회원가입하기</button>
+                        onclick="doSignUp()">회원 수정 완료</button>
                   </div>
                </div>
 
@@ -105,7 +106,7 @@
  		  }
  		  params[keys.join('')] = el.value;
  	  }
- 	 params.cmd = 'signup';
+ 	 params.cmd = 'modify';
  	  $.ajax({
  		  url : '/ajax/user',
  		  method : 'POST',
@@ -113,10 +114,10 @@
  		  contentType : 'application/json',
  		  success : function(res){
  			  if(res.result===1){
- 				  alert('회원가입이 완료되었습니다.');
- 				  location.href='/views/login';
+ 				  alert('회원정보 수정이 되었습니다');
+ 				  location.href='/';
  			  }else if(res.result===-1){
- 				  alert('이미 존재하는 아이디입니다.');
+ 				  alert('회원정보 수정이 안 되었습니다');
  			  }else{
  				  alert('문제 있음');
  			  }
@@ -128,22 +129,7 @@
 	   var toDate = new Date();  
 	   document.querySelector('#ui_age').value = (toDate.getFullYear()-birthDate.getFullYear()+1);
    }
-   function checkID(){
-	   var id = document.querySelector('#ui_id').value;
-	   var url = '/ajax/user';
-	   $.ajax({
-		   url : url,
-		   method : 'GET',
-		   data : {uiId:id,cmd:'checkID'},
-		   success : function(res){
-			   if(res.result){
-				   alert('가입 가능합니다.');
-			   }else{
-				   alert('가입이 불가능한 아이디입니다.');
-			   }
-		   }
-	   });
-   }
+  
 </script>
 </body>
 </html>

@@ -48,6 +48,7 @@ public class UserServlet extends HttpServlet {
 		System.out.println("서블렛 리절트");
 		if("login".equals(user.getCmd())) {
 			result.put("result", userService.doLogin(user, request.getSession()));
+			System.out.println("이건 유저서블렛 로긴 결과 :"+ result);
 		}else if("signup".equals(user.getCmd())) {
 			result.put("result", userService.insertUser(user));
 			System.out.println("서블렛 로긴");
@@ -55,6 +56,11 @@ public class UserServlet extends HttpServlet {
 		}else if("logout".equals(user.getCmd())) {
 			request.getSession().invalidate();
 			result.put("result", true);
+		}else if("modify".equals(user.getCmd())) {
+			System.out.println("모디파이 :"+request.getSession());
+			result.put("result", userService.updateUser(user, request.getSession()));
+		}else if("deleteAccount".equals(user.getCmd())) {
+			result.put("result", userService.deleteUser(user, request.getSession()));
 		}
 		
 		String json = gson.toJson(result);
