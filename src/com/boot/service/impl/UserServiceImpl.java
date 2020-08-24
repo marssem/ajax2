@@ -59,8 +59,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<UserInfoVO> selectUserList(UserInfoVO user) {
-		// TODO Auto-generated method stub
-		return null;
+		return udao.selectUserList(user);
 	}
 
 	@Override
@@ -82,8 +81,8 @@ public class UserServiceImpl implements UserService {
 		HttpSession hs = null;
 		ui.setUiId("2");
 		ui.setUiPwd("2");
-		boolean isLogin = ud.doLogin(ui, hs);
-		System.out.println(isLogin);
+	//	boolean isLogin = ud.doLogin(ui, hs);
+		System.out.println(ud.selectUserList(null));
 	}
 
 	@Override

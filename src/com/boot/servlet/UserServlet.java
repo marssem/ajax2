@@ -30,6 +30,8 @@ public class UserServlet extends HttpServlet {
 			System.out.println(cmd);
 			String uiId = request.getParameter("uiId");
 			result.put("result", userService.checkUserId(uiId));
+		}else if("list".equals(cmd)) {
+			result.put("list", userService.selectUserList(null));
 		}
 		PrintWriter pw = response.getWriter();
 		pw.println(gson.toJson(result));

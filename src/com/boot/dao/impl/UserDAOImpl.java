@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.boot.dao.UserDAO;
@@ -141,8 +142,35 @@ public class UserDAOImpl implements UserDAO {
 	
 	@Override
 	public List<UserInfoVO> selectUserList(UserInfoVO user) {
-		 
-		return null;
+		 List<UserInfoVO> userList = new ArrayList<>();
+		 String sql = "select * from user_info";
+		 Connection con = null;
+		 PreparedStatement ps = null;
+		 ResultSet rs = null;
+		 try {
+			con = InitServlet.getConnection();
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				UserInfoVO ui = new UserInfoVO();
+				ui.setUiNum(rs.getInt("ui_num"));
+				ui.setUiName(rs.getString("ui_name"));
+				ui.setUiAge(rs.getInt("ui_age"));
+				ui.setUiBirth(rs.getString("ui_birth"));
+				ui.setUiId(rs.getString("ui_id"));
+				ui.setUiPwd(rs.getString("ui_password"));
+				ui.setUiPhone(rs.getString("ui_phone"));
+				ui.setUiCredat(rs.getString("ui_credat"));
+				ui.setUiNickname(rs.getString("ui_nickname"));
+				ui.setUiAdmin(rs.getString("ui_admin"));
+				userList.add(ui);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			InitServlet.close(rs, ps, con);
+		}
+		return userList;
 	}
 
 	@Override
@@ -210,5 +238,10 @@ public class UserDAOImpl implements UserDAO {
 		}
 		return null;
 	}
-
+public static void main(String[] args) {
+	UserDAO ud = new UserDAOImpl();
+	InitServlet is = new InitServlet();
+	is.init();
+	System.out.println(ud.selectUserList(null));
+}
 }
