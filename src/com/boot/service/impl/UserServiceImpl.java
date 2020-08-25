@@ -93,4 +93,14 @@ public class UserServiceImpl implements UserService {
 		}
 	return false;
 	}
+
+	@Override
+	public int deleteUsers(int[] uiNums) {
+		for(int uiNum:uiNums) {
+			UserInfoVO ui = new UserInfoVO();
+			ui.setUiNum(uiNum);
+			udao.deleteUser(ui);
+		}
+		return uiNums.length;
+	}
 }

@@ -12,7 +12,7 @@ import com.boot.servlet.InitServlet;
 import com.boot.vo.UserInfoVO;
 
 public class UserDAOImpl implements UserDAO {
-
+	
 	@Override
 	public int insertUser(UserInfoVO user) {
 		Connection con = null;
@@ -244,4 +244,6 @@ public static void main(String[] args) {
 	is.init();
 	System.out.println(ud.selectUserList(null));
 }
+
+
 }

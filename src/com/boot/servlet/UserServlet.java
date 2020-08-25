@@ -45,6 +45,7 @@ public class UserServlet extends HttpServlet {
 			sb.append(str);
 		}
 		UserInfoVO user = gson.fromJson(sb.toString(), UserInfoVO.class);
+		System.out.println("user 확인 :"+user);
 		Map<String,Object> result = new HashMap<>();
 		System.out.println(user);
 		System.out.println("서블렛 리절트");
@@ -63,6 +64,8 @@ public class UserServlet extends HttpServlet {
 			result.put("result", userService.updateUser(user, request.getSession()));
 		}else if("deleteAccount".equals(user.getCmd())) {
 			result.put("result", userService.deleteUser(user, request.getSession()));
+		}else if("deleteUsers".equals(user.getCmd())){
+			result.put("result", userService.deleteUsers(user.getUiNums()));
 		}
 		
 		String json = gson.toJson(result);
