@@ -47,8 +47,8 @@ public class UserServlet extends HttpServlet {
 		UserInfoVO user = gson.fromJson(sb.toString(), UserInfoVO.class);
 		System.out.println("user 확인 :"+user);
 		Map<String,Object> result = new HashMap<>();
-		System.out.println(user);
-		System.out.println("서블렛 리절트");
+
+
 		if("login".equals(user.getCmd())) {
 			result.put("result", userService.doLogin(user, request.getSession()));
 			System.out.println("이건 유저서블렛 로긴 결과 :"+ result);
